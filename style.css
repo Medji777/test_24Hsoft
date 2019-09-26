@@ -1,0 +1,18 @@
+#root {
+    display: flex;
+    justify-content: space-around;
+}
+
+.main {
+    border-collapse: collapse;
+}
+
+.th {
+    background: #ccc;
+}
+
+.tb td, .th th{
+    padding: 5px;
+    text-align: center;
+    border: 1px solid;
+}
