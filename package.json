@@ -1,0 +1,19 @@
+{
+  "name": "test_24hsoft",
+  "version": "1.0.0",
+  "description": "Airplane sorting test",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Medji777/test_24Hsoft.git"
+  },
+  "author": "Vladimir Dergachev",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/Medji777/test_24Hsoft/issues"
+  },
+  "homepage": "https://github.com/Medji777/test_24Hsoft#readme"
+}
