@@ -16,3 +16,8 @@
     text-align: center;
     border: 1px solid;
 }
+
+.error {
+    position: absolute;
+    padding: 5px;
+}
