@@ -52,9 +52,9 @@
             let body = div.parentElement;
             this._createError(body,div,err); // создаем ошибку
         },
-        async _createError(body,div,err){
-            let contMessage = await this._createContainer(body,div); // создаем контейнер для сообщения
-            await this._createTextError(err,contMessage); // создаем текст сообщения ошибки
+        _createError(body,div,err){
+            let contMessage = this._createContainer(body,div); // создаем контейнер для сообщения
+            this._createTextError(err,contMessage); // создаем текст сообщения ошибки
             this._resetError(); // запускаем интервал на сброс сообщения о ошибке
         },
         _createContainer(body,div){
