@@ -16,6 +16,8 @@
         }
     };
     const view = {
+        _divError: null,
+        _interval: null,
         _settings: {resetInterval: 4000},
         render(data){  // Отрисовываем информацию в таблице
             let div = document.querySelector('#root');
@@ -43,35 +45,38 @@
             elHTML += `</table>`;
             div.innerHTML = elHTML;
         },
-        showError(err){
+        showError(err){ // Показываем ошибку
+            this._removeErrorElement(); // сбрасываем все ошибки
+            clearInterval(this._interval); // если запрос происходит чаще, чем сброс, то очищаем интервал
             let div = document.querySelector('#root');
             let body = div.parentElement;
-            let divError = document.querySelector('.error');
-            if(!divError){
-                this._createError(body,div,err);
-            } else {
-                this._removeErrorElement(divError);
+            this._createError(body,div,err); // создаем ошибку
+        },
+        async _createError(body,div,err){
+            let contMessage = await this._createContainer(body,div); // создаем контейнер для сообщения
+            await this._createTextError(err,contMessage); // создаем текст сообщения ошибки
+            this._resetError(); // запускаем интервал на сброс сообщения о ошибке
+        },
+        _createContainer(body,div){
+            let contMessage = document.createElement('div');
+            contMessage.classList.add('error');
+            body.insertBefore(contMessage, div);
+            this._divError = contMessage;
+            return contMessage;
+        },
+        _createTextError(err,contMessage){
+            let messageBlock = document.createElement('div');
+            messageBlock.innerText = err;
+            contMessage.appendChild(messageBlock);
+        },
+        _removeErrorElement(){
+            if(this._divError) {
+                this._divError.remove();
+                this._divError = null;
             }
         },
-        _createError(body,div,err){
-            let elDiv = document.createElement('div');
-            elDiv.classList.add('error');
-            body.insertBefore(elDiv, div);
-            this._createTextError(err);
-        },
-        _createTextError(err){
-            let divError = document.querySelector('.error');
-            let elDiv = document.createElement('div');
-            elDiv.innerText = err;
-            divError.style.background = '#ff8c8c';
-            divError.appendChild(elDiv);
-            this._resetError(divError);
-        },
-        _removeErrorElement(el){
-            el.remove()
-        },
-        _resetError(el){
-            setTimeout(()=>{this._removeErrorElement(el)},this._settings.resetInterval)
+        _resetError(){
+            this._interval = setTimeout( () => this._removeErrorElement(),this._settings.resetInterval)
         }
     };
     const app = {
@@ -96,7 +101,7 @@
         },
         async _startInterval() {
             setTimeout(async () => {
-                await this.run();
+                await this.run(); // дожидаемся полного ответа и только потом запускаем интервал
                 this._startInterval();
             }, this._settings.refreshInterval);
         },
@@ -142,7 +147,6 @@
                 this._state = {...this._state, initPlanes: {...res}}; // Получаем данные с сервера и записываем в initPlanes
             }
             catch (e) {
-                //console.error(e.message);
                 view.showError("some error has occurred");
             }
         }

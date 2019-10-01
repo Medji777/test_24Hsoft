@@ -19,5 +19,9 @@
 
 .error {
     position: absolute;
+    background: #ff8c8c;
+}
+
+.error div {
     padding: 5px;
 }
